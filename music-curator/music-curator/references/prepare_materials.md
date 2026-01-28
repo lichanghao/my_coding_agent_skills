@@ -12,7 +12,7 @@ If the scope is clear, go to the next step. If the scope is not clear, use other
 For each music in the list, search on Youtube to find the [link] of complete video and download them in `./download`. 
 Here is the example command to download the video (replace [link] with the Youtube link for each music): `yt-dlp -f -f "bestvideo[ext=mp4][vcodec^=avc]+bestaudio[ext=m4a]/best[ext=mp4]/best" --merge-output-format mp4 [link] --cookies-from-browser  chrome`
 if `yt-dlp` is not installed, remind the user and find ways to fix.
-Use [the clip script](../../scripts/climax_clip.sh) to automatically find the best point to clip: "climax_clip.sh [input.mp4] [output_clip.mp4]".
+Use [the clip script](../scripts/climax_clip.sh) to automatically find the best point to clip: "climax_clip.sh [input.mp4] [output_clip.mp4]".
 
 ## 4. Generate caption for posts
 Use the functionality "Persona-Driven Content Generation" in [skill.md](../SKILL.md) to write a caption with the user-specified format in Step 1: "Choose pre-defined format". 

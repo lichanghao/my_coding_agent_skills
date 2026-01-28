@@ -9,6 +9,7 @@ WIN="${WIN:-4}"              # loudness analysis window length (sec)
 STEP="${STEP:-2}"            # step between windows (sec); try 2 for faster
 PRE_ROLL="${PRE_ROLL:-5}"   # seconds before climax to start clip
 MODE="${MODE:-reencode}"     # reencode | copy
+FADE_OUT="${FADE_OUT:-5}"   # seconds
 
 # Get duration (integer seconds)
 DUR="$(ffprobe -v error -show_entries format=duration -of default=nk=1:nw=1 "$IN")"
@@ -72,12 +73,28 @@ echo "Best window start (climax detected): ${best_t}s"
 echo "Pre-roll applied: ${PRE_ROLL}s"
 echo "Final clip start: ${start}s"
 
+# Fade-out requires re-encoding; auto-switch if user asked for MODE=copy
+if [[ "$MODE" == "copy" && "${FADE_OUT}" != "0" ]]; then
+  echo "Fade-out requires re-encoding; switching MODE=reencode"
+  MODE="reencode"
+fi
+
+# Fade starts at (CLIP_LEN - FADE_OUT) within the clip timeline
+fade_start="$(python3 - <<PY
+clip=float("${CLIP_LEN}")
+fade=float("${FADE_OUT}")
+print(f"{max(0.0, clip-fade):.3f}")
+PY
+)"
+
 if [[ "$MODE" == "copy" ]]; then
   # Fast, lossless, may snap to keyframes
   ffmpeg -hide_banner -y -ss "$start" -t "$CLIP_LEN" -i "$IN" -c copy "$OUT"
 else
   # Accurate timing
   ffmpeg -hide_banner -y -ss "$start" -t "$CLIP_LEN" -i "$IN" \
+    -vf "fade=t=out:st=${fade_start}:d=${FADE_OUT}" \
+    -af "afade=t=out:st=${fade_start}:d=${FADE_OUT}" \
     -c:v libx264 -crf 18 -preset medium \
     -c:a aac -b:a 192k -movflags +faststart \
     "$OUT"
