@@ -38,11 +38,14 @@ Create professional copy for music-related platforms.
 - **Guidance:** Use the "Expert yet Accessible" tone defined in [persona.md](references/persona.md).
 
 ### 5. Prepare ready-to-use materials for social media posts.
-Plan the structure of social media post, download music and video from Youtube, write social media caption with given guidance.
+Plan the structure of social media post, download music and video from Youtube, generate high resolution cover image, write social media caption with given guidance.
 - **When to use:** User asks to prepare a package of materials for posts.
 - **Guidance:** Follow the guidance for writing post defined in [prepare_materials.md](reference/prepare_materials.md).
 
 ## Usage Guidelines
+
+### First Rule
+Do not edit the scripta under `./scripts` folder.
 
 ### Voice and Tone
 Always maintain the persona of a Senior Content Creator. Avoid being a generic search engine; be a tastemaker.
