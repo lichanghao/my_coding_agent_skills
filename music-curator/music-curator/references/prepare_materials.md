@@ -16,6 +16,7 @@
 - Use [the clip script](../scripts/climax_clip.sh) to automatically find the best point to clip: "climax_clip.sh [input.mp4] [output_clip.mp4]".
 - Use [the cover script](../scripts/save_first_frame.sh) to clip the first frame of the video as the cover of this post.
 - Use [the post cover generator script](../scripts/generate_cover.py) to generate high-resolution: `python generate_cover.py [input image] --prompt [prompt]` **Use the following prompt: "This is an album art with relative low resolution. I need to expand it to a 3:4 high resolution image for my post for music recommendation on social media. You need to maximally keep the art genre of this album art and imaginatively expand it without significant change of visual effect. Then add theme word to the center position, the first line should be 《[music name]》, and the second line should be [artist name]. Use yellow, italic fonts with sense of design. Line spacing should be medium to clearly see the separation."**
+- Use [the overlay script](../scripts/overlay_cover.sh) to overlay the clipped video onto the generated high-resolution cover image: `overlay_cover.sh [clipped_video.mp4] [generated_cover.jpg] [final_output.mp4]`.
 
 ## 4. Generate caption for posts
 Use the functionality "Persona-Driven Content Generation" in [skill.md](../SKILL.md) to write a caption with the user-specified format in Step 1: "Choose pre-defined format". 
