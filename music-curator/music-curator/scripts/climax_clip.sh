@@ -73,9 +73,9 @@ echo "Best window start (climax detected): ${best_t}s"
 echo "Pre-roll applied: ${PRE_ROLL}s"
 echo "Final clip start: ${start}s"
 
-# Fade-out requires re-encoding; auto-switch if user asked for MODE=copy
-if [[ "$MODE" == "copy" && "${FADE_OUT}" != "0" ]]; then
-  echo "Fade-out requires re-encoding; switching MODE=reencode"
+# Fade-out and 3:4 padding require re-encoding; auto-switch if user asked for MODE=copy
+if [[ "$MODE" == "copy" ]]; then
+  echo "Features require re-encoding; switching MODE=reencode"
   MODE="reencode"
 fi
 
@@ -93,7 +93,7 @@ if [[ "$MODE" == "copy" ]]; then
 else
   # Accurate timing
   ffmpeg -hide_banner -y -ss "$start" -t "$CLIP_LEN" -i "$IN" \
-    -vf "fade=t=out:st=${fade_start}:d=${FADE_OUT}" \
+    -vf "pad=w=2*ceil(max(iw\,ih*3/4)/2):h=2*ceil(max(ih\,iw*4/3)/2):x=(ow-iw)/2:y=(oh-ih)/2:color=black,fade=t=out:st=${fade_start}:d=${FADE_OUT}" \
     -af "afade=t=out:st=${fade_start}:d=${FADE_OUT}" \
     -c:v libx264 -crf 18 -preset medium \
     -c:a aac -b:a 192k -movflags +faststart \
