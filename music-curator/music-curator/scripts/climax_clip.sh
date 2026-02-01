@@ -9,6 +9,7 @@ WIN="${WIN:-4}"              # loudness analysis window length (sec)
 STEP="${STEP:-2}"            # step between windows (sec); try 2 for faster
 PRE_ROLL="${PRE_ROLL:-5}"   # seconds before climax to start clip
 MODE="${MODE:-reencode}"     # reencode | copy
+FADE_IN="${FADE_IN:-2}"     # seconds
 FADE_OUT="${FADE_OUT:-5}"   # seconds
 
 # Get duration (integer seconds)
@@ -94,7 +95,7 @@ else
   # Accurate timing
   ffmpeg -hide_banner -y -ss "$start" -t "$CLIP_LEN" -i "$IN" \
     -vf "pad=w=2*ceil(max(iw\,ih*3/4)/2):h=2*ceil(max(ih\,iw*4/3)/2):x=(ow-iw)/2:y=(oh-ih)/2:color=black,fade=t=out:st=${fade_start}:d=${FADE_OUT}" \
-    -af "afade=t=out:st=${fade_start}:d=${FADE_OUT}" \
+    -af "afade=t=in:st=0:d=${FADE_IN},afade=t=out:st=${fade_start}:d=${FADE_OUT}" \
     -c:v libx264 -crf 18 -preset medium \
     -c:a aac -b:a 192k -movflags +faststart \
     "$OUT"
